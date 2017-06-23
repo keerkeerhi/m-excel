@@ -36,8 +36,8 @@ var main = new Vue({
     el:".main",
     data:{
         sources:sourceArr,
-        leftData:[],
-        rightData:[],
+        leftData:{},
+        rightData:{},
         lcindex:-1,
         rcindex:-1,
         rObj:Object.create(null),
@@ -114,16 +114,16 @@ var main = new Vue({
         explain(arr)
         {
             var f1 = xlsx.parse(arr[0].path);
-            let leftData = f1[0].data;
+            let leftArr = f1[0].data;
             this.fileName = arr[0].name.split(".")[0];
             if (arr.length==1)
                 return;
-
+            this.leftData = leftArr[0];
+            console.log(this.leftData);
             var f2 = xlsx.parse(arr[1].path);
-            let rightData = f2[0].data;
-            var t1 = document.getElementById('tab_left');
-            var t2 = document.getElementById('tab_right');
-            document.getElementById('content-center').style.height = Math.max(t1.offsetHeight,t2.offsetHeight) +'px';
+            let rightArr = f2[0].data;
+            this.rightData = rightArr[0];
+            console.log(this.rightData);
         },
         selectLCol(index)
         {

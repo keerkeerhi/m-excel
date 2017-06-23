@@ -8,17 +8,12 @@
 	<div class="main" >
 		<div class="header" >
 			<div class="head-content" >
-				<ul>
-					<li v-for="it in sources" >
-						{{it.name}}
-						<img src="img/delete.png" @click="delfun(it)" style="max-height:31px;position: relative;top: 10px;" />
-					</li>
-				</ul>
+
 			</div>
 			<div class="head-right" >
 				<div style="height: 100%;width:60px;display: table;float: left" >
 					<div class="clear" @click="clear">
-						清空
+						<img src="img/clear.png" />
 					</div>
 				</div>
 				<div class="imgDiv">
@@ -31,7 +26,24 @@
 		</div>
 		<div class="content" id="content" >
 			<div class="content-top">
-
+				<ul>
+					<li v-for="it in sources" >
+						<div style="text-align: center;" >
+							<div><img class="excel" src="img/excel.png" /></div>
+							{{it.name}}<img src="img/delete.png" @click="delfun(it)" style="max-height:31px;position: relative;top: 10px;" />
+						</div>
+					</li>
+				</ul>
+				<div>
+					<table>
+						<tr><td v-for="it in leftData">{{it}}</td></tr>
+						<tr><td></td></tr>
+					</table>
+					<table>
+						<tr><td v-for="it in rightData">{{it}}</td></tr>
+						<tr><td></td></tr>
+					</table>
+				</div>
 			</div>
 			<div class="content-bottom">
 				<div @click="getSame()">

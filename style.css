@@ -11,7 +11,7 @@ body
 	margin:0px;
 	-webkit-app-region: drag;
 	border-radius: 3px;
-	background: #3c3f41;
+	background: #fcfcfc;
 }
 img,button
 {
@@ -77,8 +77,6 @@ img,button
 }
 
 .clear:hover{
-	background: #00cc66;
-	color: #FFFFFF;
 	height: 40px;
 	line-height: 40px;
 }
@@ -91,18 +89,23 @@ img,button
 	overflow:hidden;
 }
 
-.head-content ul
+.content-top ul
 {
 	float: left;
 	margin: 0px;
 }
 
-.head-content ul li
+.content-top ul li
 {
-	color: white;
+	color: #323232;
 	list-style:none;
 	float:left;
 	margin-left:20px;
+}
+
+.content-top li .excel{
+	width: 50px;
+	height: 50px;
 }
 
 .head-left
