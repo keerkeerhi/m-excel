@@ -39,8 +39,8 @@ var main = new Vue({
         sourceData:[],
         lcindex:-1,
         rcindex:-1,
-        rObj:Object.create(null),
-        fileName:""
+        fileName:"",
+        datas:{ld:[],rd:[]}
     }
     ,
     methods:{
@@ -55,9 +55,12 @@ var main = new Vue({
         ,
         delfun(it)
         {
-            this.rightData = [];this.rcindex=-1;
-            this.rObj=Object.create(null);
-            this.sources.remove(it);
+            this.rcindex=-1;
+            this.sources.splice(it,1);
+            this.lcindex = -1;
+            this.rcindex = -1;
+            this.fileName = "";
+            this.sourceData = [];
         }
         ,
         close_fun()
@@ -72,7 +75,6 @@ var main = new Vue({
             this.sources=[];
             this.lcindex = -1;
             this.rcindex = -1;
-            this.rObj = Object.create(null);
             this.fileName = "";
             this.sourceData = [];
         },
@@ -82,14 +84,22 @@ var main = new Vue({
             var res2 = [];
             var fpath = this.sources[0].path;
             var pathstr = fpath.substring(0,fpath.lastIndexOf('\\')+1);
+            var lindex = this.lcindex;
+            var rindex = this.rcindex;
             if (this.lcindex<0||this.rcindex<0)
             {
                 alert('请选择两个excel要对比的列！');
                 return;
             }
-            var rightObject = this.rObj[this.rcindex];
-            this.leftData.forEach(function(it){
-                if (String(it[main.lcindex]).trim().toLocaleLowerCase() in rightObject)
+            var loadO = this.showLoad;
+            setTimeout(function(){loadO(true)},1);
+            var rightObject = Object.create(null);
+            this.datas.rd.forEach(function(it){
+                rightObject[String(it[rindex]).trim().toLocaleLowerCase()] = 0;
+            });
+
+            this.datas.ld.forEach(function(it){
+                if (String(it[lindex]).trim().toLocaleLowerCase() in rightObject)
                     res.push(it);
                 else
                     res2.push(it);
@@ -101,30 +111,49 @@ var main = new Vue({
                 console.log("文本创建成功1");
                 i--;
                 if (i==0)
+                {
+                    loadO(false);
                     alert('完成任务！');
+                }
             });
 
             var buffer2 = xlsx.build([{name: "mySheetName", data: res2}]);
             fs.writeFile(pathstr+this.fileName+"-theDifferent.xlsx", buffer2, function(err) {
                 console.log("文本创建成功2");
                 i--;
-                if (i==0)
+                if (i==0){
+                    loadO(false);
                     alert('完成任务！');
+                }
             });
         },
         explain(arr)
         {
-            console.log('explaing......');
+            var loadO = this.showLoad;
+            setTimeout(function(){loadO(true)},1);
+            if (this.sourceData.length==1)
+            {
+                this.setRightData(arr);
+                setTimeout(function(){loadO(false)},1);
+                return;
+            }
+            this.fileName = arr[0].name.split(".")[0];
             var f1 = xlsx.parse(arr[0].path);
-            console.log('end....');
             let leftArr = f1[0].data;
-            console.log(leftArr[0]);
+            this.datas.ld = leftArr;
             this.sourceData.push(leftArr.length>0?leftArr[0]:[]);
             if (arr.length==1)
+            {
+                setTimeout(function(){loadO(false)},1);
                 return;
-
+            }
+            this.setRightData(arr);
+            setTimeout(function(){loadO(false)},1);
+        },
+        setRightData(arr){
             var f2 = xlsx.parse(arr[1].path);
             let rightArr = f2[0].data;
+            this.datas.rd = rightArr;
             this.sourceData.push(rightArr.length>0?rightArr[0]:[]);
         },
         selectLCol(index)
@@ -134,6 +163,9 @@ var main = new Vue({
         selectRCol(index)
         {
             this.rcindex = index;
+        },
+        showLoad(flag){
+            document.getElementById('loading').style.display=flag?'table':'none';
         }
     },
     watch:{
@@ -151,16 +183,6 @@ var main = new Vue({
         },
         rightWidth(){
             return 100/this.sourceData[1].length+'%';
-        }
-    },
-    directives: {
-        "init": {
-            inserted: function (el,binding) {
-                var val = binding.value;
-                if (!(val.col in main.rObj))
-                    main.rObj[val.col] = Object.create(null);
-                main.rObj[val.col][String(val.item).trim()] = '';
-            }
         }
     }
 });
@@ -183,29 +205,4 @@ holder.ondrop = function(e) {
         main.sources.add(f);
     }
     return false;
-}
-
-
-function substr(text,max)
-{
-    if (text&&text.length>max)
-        return text.substring(0,max)+'...';
-    else
-        return text;
-}
-
-function getTextWidth(textStr)
-{
-    var txt = document.createElement('div');
-    txt.style.float = 'left';
-    txt.style.position = 'absolute';
-    txt.style.whiteSpace = 'nowrap';
-    txt.style.visibility = 'hidden';
-    txt.style.fontSize = '18px;';
-    txt.style.fontFamily = 'Microsoft YaHei';
-    txt.innerHTML = textStr;
-    document.body.appendChild(txt);
-    w = txt.clientWidth;
-    document.body.removeChild(txt);
-    return w;
 }

@@ -30,11 +30,12 @@
 					<li v-for="(it,index) in sources" style="margin-top: 30px;" >
 						<div style="text-align: center;display: inline-block;margin-left: 10px;" >
 							<div><img class="excel" src="img/excel.png" /></div>
-							{{it.name}}<img src="img/delete.png" @click="delfun(it)"
+							{{it.name}}<img src="img/delete.png" @click="delfun(index)"
                                             style="max-height:31px;position: relative;top: 10px;left: 20px;" />
 						</div>
                         <table style="margin-top: 10px;">
-                            <tr><td :style="{width:index==0?leftWidth:rightWidth}" v-for="d in sourceData[index]">{{d}}</td></tr>
+                            <tr><td :class="{active:index==0?(idx==lcindex):(idx==rcindex)}"
+									@click="index==0?selectLCol(idx):selectRCol(idx)" :style="{width:index==0?leftWidth:rightWidth}" v-for="(d,idx) in sourceData[index]">{{d}}</td></tr>
                         </table>
 					</li>
 				</ul>
@@ -43,6 +44,9 @@
 				<div @click="getSame()">
 					Get Result
 				</div>
+			</div>
+			<div class="loading" id="loading" >
+				<span style="display: table-cell;vertical-align: middle;">处理中，请稍后...</span>
 			</div>
 		</div>
 	</div>
