@@ -36,8 +36,7 @@ var main = new Vue({
     el:".main",
     data:{
         sources:sourceArr,
-        leftData:{},
-        rightData:{},
+        sourceData:[],
         lcindex:-1,
         rcindex:-1,
         rObj:Object.create(null),
@@ -56,7 +55,8 @@ var main = new Vue({
         ,
         delfun(it)
         {
-            this.rightData = [];this.rcindex=-1;this.rObj=Object.create(null);
+            this.rightData = [];this.rcindex=-1;
+            this.rObj=Object.create(null);
             this.sources.remove(it);
         }
         ,
@@ -74,6 +74,7 @@ var main = new Vue({
             this.rcindex = -1;
             this.rObj = Object.create(null);
             this.fileName = "";
+            this.sourceData = [];
         },
         getSame()
         {
@@ -113,17 +114,18 @@ var main = new Vue({
         },
         explain(arr)
         {
+            console.log('explaing......');
             var f1 = xlsx.parse(arr[0].path);
+            console.log('end....');
             let leftArr = f1[0].data;
-            this.fileName = arr[0].name.split(".")[0];
+            console.log(leftArr[0]);
+            this.sourceData.push(leftArr.length>0?leftArr[0]:[]);
             if (arr.length==1)
                 return;
-            this.leftData = leftArr[0];
-            console.log(this.leftData);
+
             var f2 = xlsx.parse(arr[1].path);
             let rightArr = f2[0].data;
-            this.rightData = rightArr[0];
-            console.log(this.rightData);
+            this.sourceData.push(rightArr.length>0?rightArr[0]:[]);
         },
         selectLCol(index)
         {
@@ -141,6 +143,14 @@ var main = new Vue({
                     this.explain(val);
             },
             deep: true
+        }
+    },
+    computed:{
+        leftWidth(){
+            return 100/this.sourceData[0].length+'%';
+        },
+        rightWidth(){
+            return 100/this.sourceData[1].length+'%';
         }
     },
     directives: {

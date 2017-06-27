@@ -27,23 +27,17 @@
 		<div class="content" id="content" >
 			<div class="content-top">
 				<ul>
-					<li v-for="it in sources" >
-						<div style="text-align: center;" >
+					<li v-for="(it,index) in sources" style="margin-top: 30px;" >
+						<div style="text-align: center;display: inline-block;margin-left: 10px;" >
 							<div><img class="excel" src="img/excel.png" /></div>
-							{{it.name}}<img src="img/delete.png" @click="delfun(it)" style="max-height:31px;position: relative;top: 10px;" />
+							{{it.name}}<img src="img/delete.png" @click="delfun(it)"
+                                            style="max-height:31px;position: relative;top: 10px;left: 20px;" />
 						</div>
+                        <table style="margin-top: 10px;">
+                            <tr><td :style="{width:index==0?leftWidth:rightWidth}" v-for="d in sourceData[index]">{{d}}</td></tr>
+                        </table>
 					</li>
 				</ul>
-				<div>
-					<table>
-						<tr><td v-for="it in leftData">{{it}}</td></tr>
-						<tr><td></td></tr>
-					</table>
-					<table>
-						<tr><td v-for="it in rightData">{{it}}</td></tr>
-						<tr><td></td></tr>
-					</table>
-				</div>
 			</div>
 			<div class="content-bottom">
 				<div @click="getSame()">

@@ -93,6 +93,7 @@ img,button
 {
 	float: left;
 	margin: 0px;
+	padding: 0px;
 }
 
 .content-top ul li
@@ -100,12 +101,25 @@ img,button
 	color: #323232;
 	list-style:none;
 	float:left;
-	margin-left:20px;
 }
 
 .content-top li .excel{
-	width: 50px;
-	height: 50px;
+	width: 40px;
+	height: 40px;
+}
+
+.content-top ul,li,table{
+	width: 100%;
+}
+
+.content-top table td{
+	text-align: center;
+	height: 30px;
+	cursor: pointer;
+}
+
+.content-top table td:hover{
+	background: #cccccc;
 }
 
 .head-left
