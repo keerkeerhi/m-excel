@@ -35,7 +35,9 @@
 						</div>
                         <table style="margin-top: 10px;">
                             <tr><td :class="{active:index==0?(idx==lcindex):(idx==rcindex)}"
-									@click="index==0?selectLCol(idx):selectRCol(idx)" :style="{width:index==0?leftWidth:rightWidth}" v-for="(d,idx) in sourceData[index]">{{d}}</td></tr>
+									@click="index==0?selectLCol(idx):selectRCol(idx)" :style="{width:index==0?leftWidth:rightWidth}" v-for="(d,idx) in sourceData[index][0]">{{d}}</td></tr>
+							<tr><td :class="{active:index==0?(idx==lcindex):(idx==rcindex)}"
+									@click="index==0?selectLCol(idx):selectRCol(idx)" :style="{width:index==0?leftWidth:rightWidth}" v-for="(d,idx) in sourceData[index][1]">{{d}}</td></tr>
                         </table>
 					</li>
 				</ul>

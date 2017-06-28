@@ -141,7 +141,7 @@ var main = new Vue({
             var f1 = xlsx.parse(arr[0].path);
             let leftArr = f1[0].data;
             this.datas.ld = leftArr;
-            this.sourceData.push(leftArr.length>0?leftArr[0]:[]);
+            this.sourceData.push(leftArr.length>1?[leftArr[0],leftArr[1]]:[[],[]]);
             if (arr.length==1)
             {
                 setTimeout(function(){loadO(false)},1);
@@ -154,7 +154,7 @@ var main = new Vue({
             var f2 = xlsx.parse(arr[1].path);
             let rightArr = f2[0].data;
             this.datas.rd = rightArr;
-            this.sourceData.push(rightArr.length>0?rightArr[0]:[]);
+            this.sourceData.push(rightArr.length>1?[rightArr[0],rightArr[1]]:[[],[]]);
         },
         selectLCol(index)
         {
@@ -179,10 +179,10 @@ var main = new Vue({
     },
     computed:{
         leftWidth(){
-            return 100/this.sourceData[0].length+'%';
+            return 100/this.sourceData[0][0].length+'%';
         },
         rightWidth(){
-            return 100/this.sourceData[1].length+'%';
+            return 100/this.sourceData[1][0].length+'%';
         }
     }
 });

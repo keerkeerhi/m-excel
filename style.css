@@ -37,6 +37,7 @@ img,button
 	height:92.5%;
 	width: 100%;
 	position: relative;
+	background: #080808;
 }
 
 .content-top{
@@ -108,7 +109,7 @@ img,button
 
 .content-top ul li
 {
-	color: #323232;
+	color: #AA44E1;
 	list-style:none;
 	float:left;
 }
@@ -126,6 +127,7 @@ img,button
 	text-align: center;
 	height: 30px;
 	cursor: pointer;
+	color:#AA44E1;
 }
 
 .content-top table td:hover{
@@ -134,6 +136,7 @@ img,button
 
 .content-top table td.active{
 	background: #14A1E8;
+	color: #FFFFFF;
 }
 
 .head-left
