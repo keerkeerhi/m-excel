@@ -1,6 +1,6 @@
 {
-  "name": "vue-nw-seed",
-  "appName": "应用的中文别名",
+  "name": "m-excel",
+  "appName": "m-excel",
   "version": "0.1.1",
   "description": "A seed project with Vue.js and Nw.js",
   "author": "anchengjian <anchengjian@gmail.com>",
@@ -14,7 +14,8 @@
     "node-webkit-updater": "^0.3.3",
     "nw": "0.14.7-sdk",
     "vue": "^2.2.2",
-    "vue-router": "^2.2.0"
+    "vue-router": "^2.2.0",
+    "node-xlsx": "^0.11.0"
   },
   "devDependencies": {
     "autoprefixer": "^6.7.2",
@@ -70,12 +71,14 @@
   "main": "http://localhost:8080",
   "manifestUrl": "http://localhost:8080/releases/upgrade.json",
   "window": {
-    "title": "vue-nw-seed",
+    "title": "m-excel",
     "toolbar": false,
-    "width": 800,
-    "height": 500,
-    "min_width": 800,
-    "min_height": 500,
+    "width": 1200,
+    "height": 670,
+    "min_width": 400,
+    "min_height": 335,
+    "max_width": 1500,
+    "max_height": 800,
     "resizable": true,
     "frame": true,
     "kiosk": false,
