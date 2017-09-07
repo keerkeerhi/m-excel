@@ -60,7 +60,9 @@
     "webpack-bundle-analyzer": "^2.2.1",
     "webpack-dev-middleware": "^1.10.0",
     "webpack-hot-middleware": "^2.16.1",
-    "webpack-merge": "^2.6.1"
+    "webpack-merge": "^2.6.1",
+    "less": "^2.7.2",
+    "less-loader": "^4.0.5"
   },
   "engines": {
     "node": ">= 4.0.0",
@@ -79,7 +81,7 @@
     "min_width": 400,
     "min_height": 335,
     "resizable": true,
-    "frame": true,
+    "frame": false,
     "kiosk": false,
     "icon": "/static/logo.png",
     "show_in_taskbar": true

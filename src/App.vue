@@ -3,7 +3,7 @@
     <el-menu default-active="1-4-1" :router="true" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
              :collapse="true">
       <el-menu-item index="1" :route="'/hello'">
-        <i class="el-icon-message" ></i>
+        <i class="el-icon-message"></i>
         <span slot="title">excel</span>
       </el-menu-item>
       <el-menu-item index="2" :route="'/calc'">
@@ -15,6 +15,9 @@
         <span slot="title">导航三</span>
       </el-menu-item>
     </el-menu>
+    <div class="topRight">
+
+    </div>
     <router-view></router-view>
   </div>
 </template>
@@ -38,7 +41,7 @@
   }
 </script>
 
-<style>
+<style lang="less">
   #app {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -55,5 +58,13 @@
     position: fixed;
     top: 20%;
     background: rgb(28, 36, 56);
+  }
+
+  #app {
+
+  .topRight {
+    float: right;
+  }
+
   }
 </style>

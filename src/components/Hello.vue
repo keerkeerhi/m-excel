@@ -1,7 +1,6 @@
 <template>
   <div class="pageContent">
-    hello.............
-
+    aaaaaaaaaaaaaaaaa
   </div>
 </template>
 
