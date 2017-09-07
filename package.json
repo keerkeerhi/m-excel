@@ -15,6 +15,7 @@
     "nw": "0.14.7-sdk",
     "vue": "^2.2.2",
     "vue-router": "^2.2.0",
+    "element-ui": "^1.4.3",
     "node-xlsx": "^0.11.0"
   },
   "devDependencies": {
@@ -68,7 +69,7 @@
   "browserslist": [
     "last 2 Chrome versions"
   ],
-  "main": "http://localhost:8080",
+  "main": "http://localhost:8888",
   "manifestUrl": "http://localhost:8080/releases/upgrade.json",
   "window": {
     "title": "m-excel",
@@ -77,8 +78,6 @@
     "height": 670,
     "min_width": 400,
     "min_height": 335,
-    "max_width": 1500,
-    "max_height": 800,
     "resizable": true,
     "frame": true,
     "kiosk": false,
