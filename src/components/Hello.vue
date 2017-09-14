@@ -1,6 +1,8 @@
 <template>
   <div class="pageContent">
-    aaaaaaaaaaaaaaaaa
+    <div>aa<code>aaa我我我</code></div>
+    <hr style="border: 3px solid red;margin-left:3px;" >
+    <div hidden >bbbbb</div>
   </div>
 </template>
 
