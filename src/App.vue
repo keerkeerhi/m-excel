@@ -69,7 +69,11 @@
     display: flex;
     flex-direction: column;
   }
-
+  @-webkit-keyframes myfirst /* Safari 和 Chrome */
+  {
+    from {left: -50px;}
+    to {left: 0;}
+  }
   .el-menu-vertical-demo {
     width: 64px;
     min-height: 168px;
@@ -77,11 +81,16 @@
     z-index: 14;
     opacity: .3;
     top: 20%;
-    background: rgb(28, 36, 56);
+    left: -50px;
+    background: #fff;
   }
   .el-menu-vertical-demo:hover{
     opacity: 1;
+    left: 0;
+    background: rgb(28, 36, 56);
+    z-index: 14;
   }
+
   #app {
 
     .el-menu-vertical-demo {

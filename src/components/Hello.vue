@@ -54,6 +54,9 @@
   .pageContent>div{
     flex: 1;
   }
+  .pageContent>div:first-child{
+    margin-left: 13px;
+  }
   ul,li{
     list-style: none;
     float: left;
