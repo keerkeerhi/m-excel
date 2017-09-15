@@ -69,32 +69,39 @@
     display: flex;
     flex-direction: column;
   }
-  @-webkit-keyframes myfirst /* Safari 和 Chrome */
+
+  @keyframes second /* Safari 和 Chrome */
   {
-    from {left: -50px;}
-    to {left: 0;}
+    from {left: -50px;opacity: .3;}
+    to {left: 0px;opacity: 1;}
   }
+  @keyframes first /* Safari 和 Chrome */
+  {
+    from {left: 0px;opacity: 1;}
+    to {left: -50px;opacity: .3;}
+  }
+
   .el-menu-vertical-demo {
     width: 64px;
     min-height: 168px;
     position: fixed;
     z-index: 14;
-    opacity: .3;
     top: 20%;
     left: -50px;
     background: #fff;
+    animation: first 1s;
   }
   .el-menu-vertical-demo:hover{
     opacity: 1;
     left: 0;
-    background: rgb(28, 36, 56);
-    z-index: 14;
+    animation: second 1s;
   }
 
   #app {
 
     .el-menu-vertical-demo {
-
+      background: #1C2438;
+      border: solid .8px #20A0FF;
     i {
       font-size: 25px;
     }
@@ -103,7 +110,8 @@
     .topRight {
       display: flex;
       flex-direction: row;
-
+      -webkit-app-region: drag;
+      border-bottom: 1px solid #ccc;
       div{
         flex: 1;
       }
