@@ -3,7 +3,16 @@
     <div class="excelContent">
       <div>
         <el-table :data="leftData" border style="flex:1;">
-          <el-table-column fixed prop="date" label="日期">
+          <el-table-column  v-for="(it,index) in leftHead" :fixed="index==0" :prop="index+''" :label="it">
+            <template scope="scope" >
+              <el-button :style="{color:index==cindex?'red':''}"
+                @click.native.prevent="setCindex(index)"
+                type="text"
+                size="small">
+                {{scope.row[index]}}
+              </el-button>
+              <!--<el-tag :type="index==cindex?'success':'info'" @click="setCindex(index)" ></el-tag>-->
+            </template>
           </el-table-column>
         </el-table>
         <div class="filesDiv leftfile">
@@ -36,14 +45,17 @@
 </template>
 
 <script>
-  import xlsx from 'node-xlsx';
+  import xlsx from 'node-xlsx'
+  import fs from 'fs'
   export default {
     name: 'hello',
     data () {
       return {
         msg: 'Welcome to Your Vue.js App',
         leftData: [],
+        leftHead: [],
         rightData: [],
+        cindex:0,
         leftExcel: {fileName: "", file: null},
         rightExcels: []
       }
@@ -52,6 +64,10 @@
 //      console.log('--------->', Array.add)
     },
     methods: {
+      setCindex(i){
+        console.log('-----------',i);
+        this.cindex = i;
+      },
       deleteF(index){
         this.rightExcels.splice(index, 1);
       },
@@ -67,7 +83,20 @@
               console.log('-----main=>',event.data);
             };
             w.postMessage(file.path);
-//            let f1 = xlsx.parse(file.path);
+            let content = xlsx.parse(fs.readFileSync(file.path));
+            let f1 = content[0].data;
+            let arr = [];
+            this.leftHead = f1[0];
+            let i=1;
+            while(i<10)
+            {
+              let it = f1[i++];
+              if (it)
+                arr.push(it);
+            }
+            this.leftData = arr;
+
+            console.log('----------->',arr);
 //            console.log('----------data',);
           } else {
             this.$Message.error("请选择正确的Excel格式文件！");
@@ -207,4 +236,5 @@
     height: 100%;
     opacity: 0;
   }
+
 </style>

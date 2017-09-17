@@ -88,6 +88,7 @@
     z-index: 14;
     top: 20%;
     left: -50px;
+    opacity: .3;
     background: #fff;
     animation: first 1s;
   }
