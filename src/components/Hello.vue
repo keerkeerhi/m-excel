@@ -1,8 +1,8 @@
 <template>
   <div class="pageContent">
     <div class="excelContent">
-      <div>
-        <el-table :data="leftData" border style="flex:1;">
+      <div v-loading.fullscreen.lock="fullscreenLoading" element-loading-text="数据对比中" >
+        <el-table v-loading="leftLoading" element-loading-text="数据加载中" :data="leftData" border style="flex:1;">
           <el-table-column v-for="(it,index) in leftHead" :fixed="index==0" :prop="index+''" :label="it">
             <template scope="scope">
               <el-button :style="{color:index==cindex?'red':''}"
@@ -22,10 +22,10 @@
           </div>
         </div>
       </div>
-      <div>
+      <div v-loading="rightLoading" element-loading-text="数据加载中">
         <div v-for="(excel,index) in rightExcels">
           <el-table :data="excel.datas" border style="flex:1;">
-            <el-table-column v-for="(it,inx) in excel.head" :fixed="inx==0" :prop="inx+''" :label="it">
+            <el-table-column  v-for="(it,inx) in excel.head" :fixed="inx==0" :prop="inx+''" :label="it">
               <template scope="scope">
                 <el-button :style="{color:inx==excel.cindex?'red':''}"
                            @click.native.prevent="excel.cindex=inx;"
@@ -57,6 +57,7 @@
 <script>
   import xlsx from 'node-xlsx'
   import fs from 'fs'
+  import child_process from 'child_process'
   export default {
     name: 'hello',
     data () {
@@ -70,10 +71,14 @@
         leftExcel: {fileName: "", file: null},
         status: {left: null},
         rightExcels: [],
-        rData: []
+        rData: [],
+        leftLoading: false,
+        rightLoading: false,
+        fullscreenLoading: false
       }
     },
     created () {
+//    /select, C:\\Users\\Administrator\\Desktop\\aaa\\gg\\demo1.xlsx
 //      console.log('--------->', Array.add)
     },
     methods: {
@@ -90,6 +95,7 @@
           return;
         }
         if (this.rData.length == 0) {
+          fs.open
           this.$notify({
             title: '警告',
             message: '请导入右侧要对比的excel',
@@ -101,11 +107,12 @@
         w.onmessage = (event) => {
           let data = event.data;
           let i = 2;
-          let buffer = xlsx.build([{name: "mySheetName", data: data.res}]);
-          fs.writeFile(pathstr + fN + "-theSame.xlsx", buffer, function (err) {
-            console.log("文本创建成功1");
+          let buffer = xlsx.build([{name: "mySheetName", data: data.same}]);
+          fs.writeFile(pathstr + fN + "-theSame.xlsx", buffer, (err)=> {
             i--;
             if (i == 0) {
+              this.fullscreenLoading = false;
+              child_process.exec('start ' + pathstr);
               this.$notify({
                 title: '成功',
                 message: '完成任务',
@@ -114,11 +121,12 @@
             }
           });
 
-          let buffer2 = xlsx.build([{name: "mySheetName", data: res2}]);
-          fs.writeFile(pathstr + fN + "-theDifferent.xlsx", buffer2, function (err) {
-            console.log("文本创建成功2");
+          let buffer2 = xlsx.build([{name: "mySheetName", data: data.diff}]);
+          fs.writeFile(pathstr + fN + "-theDifferent.xlsx", buffer2, (err)=> {
             i--;
             if (i == 0) {
+              this.fullscreenLoading = false;
+              child_process.exec('start ' + pathstr);
               this.$notify({
                 title: '成功',
                 message: '完成任务',
@@ -131,6 +139,7 @@
         let len = this.rightExcels.length;
         for (let i = 0; i < len; i++)
           arr.push(this.rightExcels[i].cindex);
+        this.fullscreenLoading = true;
         w.postMessage({left: {data: this.status.left, index: this.cindex}, right: {data: this.rData, index: arr}});
       },
       removeLeft(){
@@ -140,6 +149,8 @@
         this.leftExcel = {fileName: "", file: null};
         this.status.left = null;
         this.fpath = "";
+        let finput = this.$refs.importFile1;
+        finput.value = "";
       },
       setCindex(i){
         console.log('-----------', i);
@@ -148,22 +159,27 @@
       deleteF(index){
         this.rightExcels.splice(index, 1);
         this.rData.splice(index, 1);
+        let finput = this.$refs.importFile2;
+        finput.value = "";
       },
       importExcel_1(){
         let finput = this.$refs.importFile1;
+        if (!finput.onchange)
         finput.onchange = (() => {
           if (finput.value.match(/\.(xls|xlsx|xlsm)(\?.*)?$/)) {
             let file = finput.files[0];
             this.leftExcel.fileName = this.setExcelName(file.name);
             this.leftExcel.file = file;
             this.fpath = file.path;
-            let content = xlsx.parse(fs.readFileSync(this.fpath));
-            let f1 = content[0].data;
-            this.status.left = f1;
-            this.leftHead = f1[0];
-            this.leftData = this.getExcelData(f1, 10);
-            console.log('----------->', this.leftData);
-//            console.log('----------data',);
+            this.leftLoading = true;
+            setTimeout(()=>{
+              let content = xlsx.parse(fs.readFileSync(this.fpath));
+              this.leftLoading = false;
+              let f1 = content[0].data;
+              this.status.left = f1;
+              this.leftHead = f1[0];
+              this.leftData = this.getExcelData(f1, 10);
+            },200)
           } else {
             this.$Message.error("请选择正确的Excel格式文件！");
           }
@@ -175,18 +191,22 @@
           if (finput.value.match(/\.(xls|xlsx|xlsm)(\?.*)?$/)) {
             let files = finput.files;
             let len = files.length;
-            for (let i = 0; i < len; i++) {
-              let it = files[i];
-              let content = xlsx.parse(fs.readFileSync(it.path));
-              let f1 = content[0].data;
-              this.rightExcels.push({
-                fileName: this.setExcelName(it.name),
-                head: f1[0],
-                datas: this.getExcelData(f1, 4),
-                cindex: 0
-              });
-              this.rData.push(f1);
-            }
+            this.rightLoading = true;
+            setTimeout(()=>{
+              for (let i = 0; i < len; i++) {
+                let it = files[i];
+                let content = xlsx.parse(fs.readFileSync(it.path));
+                let f1 = content[0].data;
+                this.rightExcels.push({
+                  fileName: this.setExcelName(it.name),
+                  head: f1[0],
+                  datas: this.getExcelData(f1, 4),
+                  cindex: 0
+                });
+                this.rData.push(f1);
+              }
+              this.rightLoading = false;
+            },200)
           } else {
             this.$Message.error("请选择正确的Excel格式文件！");
           }

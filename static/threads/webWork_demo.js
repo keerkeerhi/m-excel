@@ -11,21 +11,20 @@ onmessage = function (event) {
 
   let rlen = rExcels.data.length
   for (let m = rlen; m--;) {
-    let data = rexcel.data[m]
-    let inx = rexcel.index[m]
+    let data = rExcels.data[m]
+    let inx = rExcels.index[m]
     let len = data.length
     for (let n = len; n--;) {
       let it = data[n]
       rightObject[String(it[inx]).trim().toLocaleLowerCase()] = 0
     }
   }
-
   let lDatas = lExcel.data
   let llen = lDatas.length
   let linx = lExcel.index
   for (let i = 0; i < llen; i++) {
     let it = lExcel.data[i]
-    if (rightObject.hasOwnProperty(String(it[linx]).trim().toLocaleLowerCase()))
+    if (String(it[linx]).trim().toLocaleLowerCase() in rightObject)
       res.push(it)
     else
       res2.push(it)
