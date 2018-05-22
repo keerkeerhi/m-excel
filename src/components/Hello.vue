@@ -151,8 +151,6 @@
         this.leftExcel = {fileName: "", file: null};
         this.status.left = null;
         this.fpath = "";
-        let finput = this.$refs.importFile1;
-        finput.value = "";
       },
       setCindex(i){
         console.log('-----------', i);
