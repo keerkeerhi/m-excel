@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Hello from '@/components/Hello'
-import Update from '@/components/Update'
-import Calc from '@/components/Calc'
-import Nothing from '@/components/Nothing'
+const Hello = r => require.ensure([], () => r(require('../components/Hello')), 'hello')
+const Update = r => require.ensure([], () => r(require('../components/Update')), 'update')
+const Calc = r => require.ensure([], () => r(require('../components/Calc')), 'calc')
+const Nothing = r => require.ensure([], () => r(require('../components/Nothing')), 'nothing')
 import init from '../utils/init'
 console.log('----------------init=', init)
 Vue.use(Router)

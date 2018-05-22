@@ -1,30 +1,73 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>m-excel</title>
-    <link rel="shortcut icon" type="image/png" href="static/logo.png" />
-  </head>
-  <style>
-    html
-    {
-      height: 100%;
-      font-family: "Microsoft YaHei";
-      font-size:18px;
+<head>
+  <meta charset="utf-8">
+  <title>m-excel</title>
+  <link rel="shortcut icon" type="image/png" href="static/logo.png"/>
+</head>
+<style>
+  html {
+    height: 100%;
+    font-family: "Microsoft YaHei";
+    font-size: 18px;
+  }
+
+  body {
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    /*-webkit-app-region: drag;*/
+    -webkit-app-region: no-drag;
+    border-radius: 3px;
+    background: #fcfcfc;
+  }
+
+  #loading {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #120067;
+    z-index: 1000;
+  }
+  #loading>img{
+    animation: rotateAni 2s linear infinite;
+  }
+  #loading>label{
+    color: orangered;
+    margin-top: 30px;
+    font-size: 50px;
+    font-style: italic;
+    letter-spacing: 10px;
+  }
+  @keyframes rotateAni {
+    from {
+      -webkit-transform: rotate(0deg);
+      -moz-transform: rotate(0deg);
+      -ms-transform: rotate(0deg);
+      -o-transform: rotate(0deg);
+      transform: rotate(0deg);
     }
-    body
-    {
-      width: 100%;
-      height: 100%;
-      margin:0px;
-      /*-webkit-app-region: drag;*/
-      -webkit-app-region: no-drag;
-      border-radius: 3px;
-      background: #fcfcfc;
+    to {
+      -webkit-transform: rotate(360deg);
+      -moz-transform: rotate(360deg);
+      -ms-transform: rotate(360deg);
+      -o-transform: rotate(360deg);
+      transform: rotate(360deg);
     }
-  </style>
-  <body>
-    <div id="app"></div>
-    <!-- built files will be auto injected -->
-  </body>
+  }
+</style>
+<body>
+<div id="loading">
+  <img src="static/logo.png">
+  <label>大玉软件</label>
+</div>
+<div id="app" ></div>
+<!-- built files will be auto injected -->
+</body>
 </html>

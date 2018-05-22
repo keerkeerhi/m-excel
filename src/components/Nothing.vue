@@ -1,10 +1,16 @@
 <template>
-    <div class="pageContent">
-        there is nothing..
+    <div class="nothingPage">
+      <section class="nothingContent" >
+
+      </section>
+      <section class="nothingBottom" >
+
+      </section>
     </div>
 </template>
 
 <script>
+  import './Nothing.css'
   export default {
     name: 'hello',
     data () {
@@ -14,17 +20,3 @@
     }
   }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-    .pageContent {
-      width: 100%;
-      height: calc(100% - 28px);
-        background: rgb(28, 36, 56);
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      align-items: center;
-      color: #fff;
-    }
-</style>

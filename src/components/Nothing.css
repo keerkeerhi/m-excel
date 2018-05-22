@@ -1,0 +1,13 @@
+.nothingPage{
+  background: #343434;
+  display: flex;
+  flex-direction: column;
+}
+.nothingContent{
+  flex:1;
+}
+.nothingBottom{
+  height: 60px;
+  background: green;
+}
+

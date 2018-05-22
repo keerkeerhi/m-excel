@@ -134,6 +134,8 @@
         w.postMessage({left: {data: this.status.left, index: this.cindex}, right: {data: this.rData, index: arr}});
       },
       removeLeft(){
+        let finput = this.$refs.importFile1;
+        finput.value = ''
         this.leftData = null;
         this.leftHead = null;
         this.cindex = 0;
