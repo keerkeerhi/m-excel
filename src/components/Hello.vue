@@ -95,7 +95,6 @@
           return;
         }
         if (this.rData.length == 0) {
-          fs.open
           this.$notify({
             title: '警告',
             message: '请导入右侧要对比的excel',
