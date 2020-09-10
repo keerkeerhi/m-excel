@@ -23,7 +23,7 @@
     <router-view v-if="useAble" class="content"></router-view>
     <section class="getActiveCode" v-else >
       <label>
-        请复制机器码给管理员"小玉"获取激活码!!!
+        请复制机器码给管理员"小玉"，微信同号：15537232100 获取激活码!!!
       </label>
       <div class="machineCls" >
         <span>
@@ -55,18 +55,29 @@
     },
     methods: {
       acvFun(){
-//        console.log(this.iiiiFun(this.disCode))
-        if (this.password==this.iiiiFun(this.disCode))
+        if (this.password==this.iiiiFun_try(this.disCode))
         {
+          this.useAble = true
+          this.$message({
+            message: '激活成功，欢迎试用大玉软件~~',
+            type: 'success'
+          });
+        }
+        else
+        {
+          if (this.password==this.iiiiFun(this.disCode))
+          {
+            localStorage.setItem("disCode",this.disCode)
             localStorage.setItem("useAbleCode",this.password)
             this.useAble = true
             this.$message({
               message: '激活成功，欢迎使用大玉软件~~',
               type: 'success'
             });
+          }
+          else
+            this.$message('激活码不正确哦！');
         }
-        else
-          this.$message('激活码不正确哦！');
       },
       copyFun(){
         let ve = this
@@ -92,7 +103,7 @@
       handleClose (key, keyPath) {
         console.log(key, keyPath)
       },
-      iiiiFun(mcode){
+      iiiiFun_try(mcode){
         let a1 = [1,0,2,4,8,9,3,5]
         let i = 3
         let m = 0
@@ -105,12 +116,29 @@
             start +=r
         }
         return start
+      },
+      iiiiFun(mcode){
+        let a1 = [8,4,6,9,7,9,6,6]
+        let i = 3
+        let m = 0
+        let start = 'day'
+        while(i<a1.length){
+          let c = mcode.charAt(i)
+          let r = String.fromCharCode(c.charCodeAt()+a1[m])
+          i++;
+          m++;
+          start +=r
+        }
+        return start
       }
     },
     created () {
       this.win = win
       let useAble = localStorage.getItem("useAbleCode")
-      this.useAble = useAble
+      let disCode = localStorage.getItem("disCode")
+      if (useAble&&disCode)
+        this.useAble = (useAble==this.iiiiFun(disCode))
+
 
       function getDiskSerialNum(callBack){
 //        const si = require('systeminformation');

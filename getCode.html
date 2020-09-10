@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  <script>
+    function iiiiFun(mcode){
+      let a1 = [1,0,2,4,8,9,3,5]
+      let i = 3
+      let m = 0
+      let start = 'day'
+      while(i<a1.length){
+        let c = mcode.charAt(i)
+        let r = String.fromCharCode(c.charCodeAt()+a1[m])
+        i++;
+        m++;
+        start +=r
+      }
+      return start;
+    }
+  </script>
+</head>
+<body>
+</body>
+</html>
