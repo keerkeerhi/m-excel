@@ -90,8 +90,23 @@
 
 <script>
   import xlsx from 'node-xlsx'
+  import lx from '../utils/xlsx.js';
   import fs from 'fs'
   import child_process from 'child_process'
+  const XLSX = lx.CFB;
+  const parse = (mixed, options = {}) => {
+    console.log('=222222222222222',XLSX)
+    const workSheet = XLSX.read(mixed, options);
+    console.log('======ws',workSheet)
+    return Object.keys(workSheet.Sheets).map((name) => {
+      console.log('-----name',name)
+      const sheet = workSheet.Sheets[name];
+      console.log('-----sheet',sheet)
+      let data = XLSX.utils.sheet_to_json(sheet, {header: 1, raw: options.raw !== false})
+      console.log('-----cont',data);
+      return {name, data};
+    });
+  };
 
   export default {
     name: 'hello',
@@ -333,33 +348,35 @@
       },
       importExcel_1(){
         let finput = this.$refs.importFile1;
+        let _this = this;
         if (!finput.onchange)
         finput.onchange = (() => {
           if (finput.value.match(/\.(xls|xlsx|xlsm)(\?.*)?$/)) {
             let file = finput.files[0];
-            this.leftExcel.fileName = this.setExcelName(file.name);
-            this.leftExcel.file = file;
-            this.fpath = file.path;
-            this.leftLoading = true;
+            _this.leftExcel.fileName = _this.setExcelName(file.name);
+            _this.leftExcel.file = file;
+            _this.fpath = file.path;
+            _this.leftLoading = true;
             setTimeout(()=>{
               console.log('------------11111');
               let content;
               try {
-                content = xlsx.parse(fs.readFileSync(this.fpath));
+                content = parse(fs.readFileSync(_this.fpath));
+                // content = xlsx.parse(_this.fpath);
               }catch(e)
               {
                 console.log('=====>error',e)
               }
               console.log("----leftData",content)
               // let
-              this.leftLoading = false;
+              _this.leftLoading = false;
               let f1 = content[0].data;
-              this.status.left = f1;
-              this.leftHead = f1[0];
-              this.leftData = this.getExcelData(f1, 10);
+              _this.status.left = f1;
+              _this.leftHead = f1[0];
+              _this.leftData = _this.getExcelData(f1, 10);
             },200)
           } else {
-            this.$Message.error("请选择正确的Excel格式文件！");
+            _this.$Message.error("请选择正确的Excel格式文件！");
           }
         });
       },
@@ -374,7 +391,7 @@
             setTimeout(()=>{
               for (let i = 0; i < len; i++) {
                 let it = files[i];
-                let content = xlsx.parse(fs.readFileSync(it.path));
+                let content = parse(fs.readFileSync(it.path));
                 let f1 = content[0].data;
                 this.rightExcels.push({
                   fileName: this.setExcelName(it.name),
