@@ -90,24 +90,10 @@
 
 <script>
   import xlsx from 'node-xlsx'
-  import lx from '../utils/xlsx.js';
   import fs from 'fs'
   import child_process from 'child_process'
-  const XLSX = lx.CFB;
-  const parse = (mixed, options = {}) => {
-    console.log('=222222222222222',XLSX)
-    const workSheet = XLSX.read(mixed, options);
-    console.log('======ws',workSheet)
-    return Object.keys(workSheet.Sheets).map((name) => {
-      console.log('-----name',name)
-      const sheet = workSheet.Sheets[name];
-      console.log('-----sheet',sheet)
-      let data = XLSX.utils.sheet_to_json(sheet, {header: 1, raw: options.raw !== false})
-      console.log('-----cont',data);
-      return {name, data};
-    });
-  };
-
+  import {read_xlsx} from '../utils/read.js'
+  import { checkUpdate } from '@/utils/update.js'
   export default {
     name: 'hello',
     data () {
@@ -358,22 +344,20 @@
             _this.fpath = file.path;
             _this.leftLoading = true;
             setTimeout(()=>{
-              console.log('------------11111');
-              let content;
               try {
-                content = parse(fs.readFileSync(_this.fpath));
                 // content = xlsx.parse(_this.fpath);
+                read_xlsx(_this.fpath,(content)=>{
+                  console.log('-----res',content)
+                  _this.leftLoading = false;
+                  let f1 = content[0].data;
+                  _this.status.left = f1;
+                  _this.leftHead = f1[0];
+                  _this.leftData = _this.getExcelData(f1, 10);
+                })
               }catch(e)
               {
                 console.log('=====>error',e)
               }
-              console.log("----leftData",content)
-              // let
-              _this.leftLoading = false;
-              let f1 = content[0].data;
-              _this.status.left = f1;
-              _this.leftHead = f1[0];
-              _this.leftData = _this.getExcelData(f1, 10);
             },200)
           } else {
             _this.$Message.error("请选择正确的Excel格式文件！");
@@ -391,7 +375,7 @@
             setTimeout(()=>{
               for (let i = 0; i < len; i++) {
                 let it = files[i];
-                let content = parse(fs.readFileSync(it.path));
+                let content = xlsx.parse(fs.readFileSync(it.path));
                 let f1 = content[0].data;
                 this.rightExcels.push({
                   fileName: this.setExcelName(it.name),
